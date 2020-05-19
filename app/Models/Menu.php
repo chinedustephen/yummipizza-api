@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $primaryKey = 'order_id';
+    protected $primaryKey = 'menu_id';
 
-
-    const CREATED_AT = 'order_created_at';
-    const UPDATED_AT = 'order_updated_at';
+    const CREATED_AT = 'menu_created_at';
+    const UPDATED_AT = 'menu_updated_at';
 }
