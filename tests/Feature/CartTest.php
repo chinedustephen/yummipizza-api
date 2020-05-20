@@ -22,11 +22,10 @@ class CartTest extends TestCase
         $user_cookie = $this->faker()->regexify('[A-Za-z0-9]{20}');
 
         $response = $this->withHeaders([
-            'cookie' => $user_cookie,
+            'user-cookie' => $user_cookie,
         ])->json('POST', route('api.cart.store'),
             [
                 'menu_id'=>rand(1, 8),
-                'quantity'=>rand(1, 20),
             ]);
 
 
@@ -42,7 +41,7 @@ class CartTest extends TestCase
         ]);
 
         $response = $this->withHeaders([
-            'cookie' => $user_cookie,
+            'user-cookie' => $user_cookie,
         ])->json('GET', route('api.cart.index'));
 
 
@@ -58,7 +57,7 @@ class CartTest extends TestCase
         $cart_id = $cartFactory->cart_id;
 
         $response = $this->withHeaders([
-            'cookie' => $user_cookie,
+            'user-cookie' => $user_cookie,
         ])->json('PUT', route('api.cart.update', ['cart'=> $cart_id]),
             [
                 'quantity'=>rand(1, 20),
@@ -75,7 +74,7 @@ class CartTest extends TestCase
         $cart_id = $cartFactory->cart_id;
 
         $response = $this->withHeaders([
-            'cookie' => $user_cookie,
+            'user-cookie' => $user_cookie,
         ])->json('DELETE', route('api.cart.delete', ['cart'=> $cart_id]));
 
         $response->assertStatus(200);
