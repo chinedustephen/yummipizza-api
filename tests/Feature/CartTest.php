@@ -25,7 +25,7 @@ class CartTest extends TestCase
             'cookie' => $user_cookie,
         ])->json('POST', route('api.cart.store'),
             [
-                'menu_id'=>rand(1, 20),
+                'menu_id'=>rand(1, 8),
                 'quantity'=>rand(1, 20),
             ]);
 

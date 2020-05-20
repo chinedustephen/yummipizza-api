@@ -24,3 +24,6 @@ Route::get('cart', 'CartController@index')->name('api.cart.index');
 Route::post('add-to-cart', 'CartController@store')->name('api.cart.store');
 Route::put('update-cart/{cart}', 'CartController@update')->name('api.cart.update');
 Route::delete('delete-cart/{cart}', 'CartController@delete')->name('api.cart.delete');
+
+
+Route::post('place-order', 'OrderController@store')->name('api.order.store');
