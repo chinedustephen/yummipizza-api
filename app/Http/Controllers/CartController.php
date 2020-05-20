@@ -25,10 +25,19 @@ class CartController extends Controller
 
     public function store(Request $request){
         try {
-            $cart = new Cart();
-            $cart->cart_user_cookie = $this->getCookie($request);
-            $cart->cart_menu_id = $request->menu_id;
-            $cart->cart_quantity = $request->quantity;
+            $cart = Cart::where([
+                ["cart_user_cookie", $this->getCookie($request)],
+                ["cart_menu_id", $request->menu_id]
+            ])->first();
+
+            if(!$cart) {
+                $cart = new Cart();
+                $cart->cart_user_cookie = $this->getCookie($request);
+                $cart->cart_menu_id = $request->menu_id;
+                $cart->cart_quantity = 1;
+            }else{
+                $cart->cart_quantity = $cart->cart_quantity + 1;
+            }
             $cart->save();
             return $this->successResponse('Item added to Cart', $cart);
         }catch (\Throwable $e){
