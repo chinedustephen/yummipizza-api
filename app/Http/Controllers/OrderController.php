@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Actions\OrderDetailsAction;
+use App\User;
+use Illuminate\Http\Request;
+use App\Modules\HeaderRequest;
+use App\Models\Order;
+
+class OrderController extends Controller
+{
+    use HeaderRequest;
+
+    public function store(Request $request){
+        try{
+            $user_cookie = $this->getCookie($request);
+            $user = User::where('email', $request->email)->firstOrCreate([
+                'email'=>$request->email
+            ]);
+            $address = $request->address;
+            $reference_id = uniqid('order').rand(1, 999);
+
+            $totalAmount = (new OrderDetailsAction())->saveOrderDetails($user_cookie, $reference_id, $address);
+
+            $order = new Order();
+            $order->order_user_id = $user->id;
+            $order->order_reference_id = $reference_id;
+            $order->order_total_amount = $totalAmount;
+            $order->save();
+
+            return $this->successResponse('Your order was placed successfullu ', $order);
+
+        }catch (\Throwable $e){
+            report($e);
+            return $this->errorResponse('Error placing order', false);
+        }
+    }
+}
