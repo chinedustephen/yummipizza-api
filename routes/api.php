@@ -18,4 +18,9 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('menus', 'MenuController@index');
+Route::get('menus', 'MenuController@index')->name('api.menu.index');
+
+Route::get('cart', 'CartController@index')->name('api.cart.index');
+Route::post('add-to-cart', 'CartController@store')->name('api.cart.store');
+Route::put('update-cart/{cart}', 'CartController@update')->name('api.cart.update');
+Route::delete('delete-cart/{cart}', 'CartController@delete')->name('api.cart.delete');
