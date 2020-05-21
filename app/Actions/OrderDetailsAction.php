@@ -25,6 +25,7 @@ class OrderDetailsAction{
                 $orderDetails->ordet_unit_price = $data->menu_price;
                 $orderDetails->ordet_total_price = $menu_total_amount;
                 $orderDetails->save();
+                $data->delete();
                 $totalAmount += $menu_total_amount;
             }
             return $totalAmount;
