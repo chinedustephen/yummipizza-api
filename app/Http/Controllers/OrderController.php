@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Modules\HeaderRequest;
 use App\Models\Order;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -14,6 +15,12 @@ class OrderController extends Controller
 
     public function store(Request $request){
         try{
+            $validator = Validator::make($request->all(), ['email'=>'bail|required|email', 'address'=>'required']);
+            if($validator->fails()){
+                $errors = $validator->errors();
+                return $this->errorResponse('Inputs are incorrect', $errors);
+            }
+
             $user_cookie = $this->getCookie($request);
             $user = User::where('email', $request->email)->firstOrCreate([
                 'email'=>$request->email
@@ -29,11 +36,11 @@ class OrderController extends Controller
             $order->order_total_amount = $totalAmount;
             $order->save();
 
-            return $this->successResponse('Your order was placed successfullu ', $order);
+            return $this->successResponse('Your order was placed successfully ', $order);
 
         }catch (\Throwable $e){
             report($e);
-            return $this->errorResponse('Error placing order', false);
+            return $this->errorResponse($e->getMessage(), false);
         }
     }
 }
