@@ -12,7 +12,7 @@ class CartController extends Controller
 
     public function index(Request $request){
         try {
-            $cart = Cart::where('cart_user_cookie', $this->getCookie($request))->get();
+            $cart = Cart::join('menus', 'menu_id', 'cart_menu_id')->where('cart_user_cookie', $this->getCookie($request))->get();
 
             return $cart->isNotEmpty() ?
                 $this->successResponse('Cart items', $cart) :
